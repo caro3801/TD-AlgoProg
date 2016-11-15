@@ -1,0 +1,107 @@
+\documentclass[french]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage[a4paper,left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{babel}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[L]{Algorithmique et Programmation Avancée}
+\fancyfoot[R]{Ebersold, Thieblin, Desprat}
+\fancyhead[R]{Département Mathématiques-Informatique}
+\fancyfoot[L]{MIA0301V - MI00304}
+
+
+\usepackage{listingsutf8}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset { %
+	language=C++,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{olive}\ttfamily,
+    morecomment=[l][\color{magenta}]{\#},
+	backgroundcolor=\color{black!5}, % set backgroundcolor
+	numbers=left, 
+    numberstyle=\tiny\ttfamily, 
+    breaklines=true,
+    numbersep=5pt,
+    xleftmargin=.25in,
+    xrightmargin=.25in
+}
+\lstset{%
+	inputencoding=utf8,
+	extendedchars=true,
+	literate=%
+	{é}{{\'e}}{1}%
+	{è}{{\`e}}{1}%
+	{à}{{\`a}}{1}%
+	{ç}{{\c{c}}}{1}%
+	{œ}{{\oe}}{1}%
+	{ù}{{\`u}}{1}%
+	{É}{{\'E}}{1}%
+	{È}{{\`E}}{1}%
+	{À}{{\`A}}{1}%
+	{Ç}{{\c{C}}}{1}%
+	{Œ}{{\OE}}{1}%
+	{Ê}{{\^E}}{1}%
+	{ê}{{\^e}}{1}%
+	{î}{{\^i}}{1}%
+	{ô}{{\^o}}{1}%
+	{û}{{\^u}}{1}%
+	{ë}{{\¨{e}}}1
+	{û}{{\^{u}}}1
+	{â}{{\^{a}}}1
+	{Â}{{\^{A}}}1
+	{Î}{{\^{I}}}1
+}
+
+
+\begin{document}
+	
+	\begin{minipage}{\textwidth}
+		\begin{center}
+			
+			{\Large Algorithmique et Programmation Avancée - Mise en œuvre avec C++ \\ Feuille d'exercices : \textbf{les Piles}}
+		\end{center}
+	\end{minipage}
+	\section{Implantez les opérations d’une pile spécifiées dans le cours}
+On désire réaliser la notion de pile à l'aide d'une structure de données. 
+Le type \texttt{Pile} est une structure de données comportant 2 \textbf{champs} :
+\begin{description}
+	\item[Elts] : tableau devant contenir les éléments de la pile. La capacité de la pile est définie par~\texttt{MAX}\footnote{En C++ pour définir une macro \texttt{NOMMACRO} associée à une valeur \texttt{MAVALEUR}, on utilise \texttt{\#define NOMMACRO MAVALEUR} -- i.e. à chaque fois qu'on utilise \texttt{NOMMACRO}, la valeur \texttt{MAVALEUR} associée sera utilisée. Ici, on s'en sert pour définir une constante \texttt{MAX} à 100}. Les éléments de ce tableau sont de type \textbf{entiers}.
+	\item[NbElts] : nombre d’éléments dans la pile. On supposera que les éléments de la pile sont rangés dans l’ordre des indices croissants. Pour une pile vide, NbElts doit être égal à zéro.
+\end{description}
+
+\textbf{Trouver les erreurs} le Listing \ref{list1} et \textbf{écrire} le code corrigé.
+	\begin{lstlisting}[caption={A corriger: Structure Pile},label=list1]
+#define MAX 100
+Struc Pile{
+	tableauChar Elts[MAX];
+	entier NbElts
+} 
+\end{lstlisting}
+
+\section{Ecrire un sous-programme vérifiant l’existence d’un élément de valeur << e >> dans la pile}
+Ce traitement devra être basé sur une \textbf{recherche dichotomique}.
+
+\section{Utilisation d’une pile : Application}
+\textbf{Ecrire} un algorithme qui vérifie qu’un texte contenant des caractères standards est syntaxiquement correct du point de vue des parenthèses.
+
+Les parenthèses sont de trois types : \texttt{ (, \{, [ } et leurs parenthèses fermantes correspondantes sont respectivement \texttt{), \}, ]}.
+$\rightarrow$ on peut commencer juste par les parenthèses
+\begin{lstlisting}[caption={Rappel : Déclaration d'une chaîne de caractères},label=stringrappel]
+char x[] = "une chaine de caractères avec des parenthèses ())())))))(((())";
+
+cout << x[0] << endl;//la console affiche : u
+\end{lstlisting}
+
+La correction syntaxique implique qu’à chaque parenthèse ouvrante corresponde une parenthèse fermante du même type, plus loin dans le texte.
+
+
+Le texte compris entre ces deux parenthèses devra également être correct du point de vue des parenthèses.
+\end{document}

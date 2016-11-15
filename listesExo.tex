@@ -1,0 +1,251 @@
+\documentclass[french]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage[a4paper,left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{babel}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[L]{Algorithmique et Programmation Avancée}
+\fancyfoot[R]{Ebersold, Thieblin, Desprat}
+\fancyhead[R]{Département Mathématiques-Informatique}
+\fancyfoot[L]{MIA0301V - MI00304}
+
+
+\usepackage{listingsutf8}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset { %
+	language=C++,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{olive}\ttfamily,
+    morecomment=[l][\color{magenta}]{\#},
+	backgroundcolor=\color{black!5}, % set backgroundcolor
+	numbers=left, 
+    numberstyle=\tiny\ttfamily, 
+    breaklines=true,
+    numbersep=5pt,
+    xleftmargin=.25in,
+    xrightmargin=.25in
+}
+\lstset{%
+	inputencoding=utf8,
+	extendedchars=true,
+	literate=%
+	{é}{{\'e}}{1}%
+	{è}{{\`e}}{1}%
+	{à}{{\`a}}{1}%
+	{ç}{{\c{c}}}{1}%
+	{œ}{{\oe}}{1}%
+	{ù}{{\`u}}{1}%
+	{É}{{\'E}}{1}%
+	{È}{{\`E}}{1}%
+	{À}{{\`A}}{1}%
+	{Ç}{{\c{C}}}{1}%
+	{Œ}{{\OE}}{1}%
+	{Ê}{{\^E}}{1}%
+	{ê}{{\^e}}{1}%
+	{î}{{\^i}}{1}%
+	{ô}{{\^o}}{1}%
+	{û}{{\^u}}{1}%
+	{ë}{{\¨{e}}}1
+	{û}{{\^{u}}}1
+	{â}{{\^{a}}}1
+	{Â}{{\^{A}}}1
+	{Î}{{\^{I}}}1
+}
+
+
+\begin{document}
+	
+	\begin{minipage}{\textwidth}
+\begin{center}
+
+{\Large Algorithmique et Programmation Avancée - Mise en œuvre avec C++ \\ Feuille d'exercices : \textbf{les Listes}}
+\end{center}
+	\end{minipage}
+	
+	\section*{Notions d'implantation à connaître}
+	En C++, Il est possible de créer ses propres types, à partir des types existants.
+	Ainsi, les structures de données se définissent de la façon suivante :
+	Exemple : le type date
+	
+	\begin{lstlisting}[caption={le type \textbf{date}}]
+struct date {
+	int jour ; 
+	int mois ; 
+	int annee ;
+};
+	\end{lstlisting}
+	
+	Chaque \textbf{variable} de type \texttt{date} est donc composée de trois parties appelées ses « champs » (\texttt{jour,mois,annee}). 
+	
+	Chaque \textbf{champ} est caractérisé par son \textbf{type} et son \textbf{identificateur}.
+	
+	Accès aux champs d'une variable composée : utiliser l’opérateur << \textbf{.} >> suivi de l’identificateur du champ. Ainsi : \texttt{id\_variable.id\_champ} permet d’accéder au champ \texttt{id\_champ} de la variable \texttt{id\_variable}.
+	
+	\begin{lstlisting}[caption={Utilisation du type date}]
+int main() {
+    	date d;
+    	d.jour = 7;
+    	d.mois = 6;
+    	d.annee = 2012;
+    	cout << d.jour << "/" << d.mois << "/" << d.annee << endl;
+    	system("PAUSE");
+}
+	\end{lstlisting}
+	
+	\section{Ecrire le type ListeIterative en C++}
+	\subsection{Donnez la structure d’une liste itérative implantée par un tableau}
+	Considérons les sous-programmes suivants dans une liste d’entiers (\texttt{int tab[10]}):
+\begin{lstlisting}[caption={Liste des opérations dans une liste d’entiers}]
+// le rajout d un élément se fait en tête de liste
+void insererAuDebut(int element){} 
+// On peut vider la liste dans sa totalite
+void purger(){} 
+//On supprime l élément repere par sa valeur
+boolean effacerElement(int element){}
+// teste si la liste est vide
+boolean estVide(){} 
+// retourne la longueur de la liste
+int longueur(){}
+//retourne la valeur de l élément en tete de liste
+int tete(){}
+// recherche si l entier element est present dans la liste 
+// si oui le programme retourne son index 
+// sinon s il n est pas dans la liste le programme retourne -1.
+int rechercher (int element){}  
+\end{lstlisting}
+	
+	
+	\subsection{A partir de ces spécifications, donnez le code de ces opérations}
+
+	\section{Constitution d’une liste}
+	Construire la liste d’entier L=<6, 55, 444>.
+	
+	\begin{lstlisting}
+int main(){
+    Liste l= listeVide(); //creation liste vide
+    cout << "Insertion de 444" << endl;
+    insererAuDebut(l,444);
+    afficherListe(l);
+    cout << "Insertion de 55" << endl;
+    insererAuDebut(l,55);
+    afficherListe(l);
+    cout << "Insertion de 6" << endl;
+    insererAuDebut(l,6);
+    afficherListe(l);
+	
+    //Exemple d'utilisation de la fonction effacerElement
+    cout << "Suppression de 55" << endl;
+    effacerElement(l,55);
+    afficherListe(l);
+    
+    cout << "Purge" << endl;
+    purger(l);
+    afficherListe(l);
+    cin.get(); //attendre que l'utilisateur appuie sur ENTREE
+    return 0;	 
+}
+	\end{lstlisting}
+	\section{Ecrire le type ListeIterative en C++ avec insertion, suppression à un index donné}
+	A partir des opérations décrites en cours, donnez le code d’une ListeIterative
+	
+	\begin{lstlisting}
+struct Liste{
+    int T[10];//tableau d'entiers (ici taille max = 10)
+    int NbEl;
+};//declaration d'une structure finie par un point-virgule
+
+//fonction qui cree une liste vide 
+Liste listeVide(){
+    //creation de la liste
+    //preciser que la liste est vide
+    //renvoyer la liste
+}
+
+//Fonction qui renvoie le premier element de la liste
+int tete(Liste l){}
+
+//renvoie -1 si l'element n'est pas dans la liste, son indice sinon
+int rechercher (Liste l, int e){
+    //tant que je n'ai pas trouve e et que je suis encore dans le tableau
+        //mon element est l'element recherche?
+ 	   	//OUI
+ 	   	    //recuperer l'index
+ 	   	//NON
+ 	   	    //je vais regarder l'element suivant
+    //retourner la valeur de l'index
+}
+
+//Fonction pour savoir si une liste est vide
+bool estVide(Liste l){
+    // Si l.NbEl==0, renvoie True,  false sinon
+}
+
+//fonction qui renvoie la longueur d'une liste
+int longueur(Liste l){}
+
+//Fonction qui insere un element a l'indice index du tableau
+void inserer(Liste &l, int index, int e){
+    //verification qu'il reste de la place pour un element
+    //sinon
+        // parcours du tableau dans le sens inverse 
+        // décalage de tous les éléments à droite de l'indice d'insertion vers la droite
+        
+        //affectation de la tete de liste avec le nouvel element
+        //incrementation du nombre d'elements dans la liste
+    }
+}
+
+//Fonction qui retire l'element a l'indice index de la liste
+void supprimer(Liste &l, int index){
+    //verifier que l'indice est dans le tableau
+        //parcours de la liste de l'element a enlever a l'avant dernier element
+        //decalage vers la gauche des elements apres celui a enlever
+          
+        //decrementation du nb d'elements
+    }
+}
+
+//fonction pour afficher la liste
+void afficherListe(Liste l){
+    cout << "La liste contient : " ;
+    for (int i=0; i <l.NbEl; i++){
+        cout << l.T[i] << " ";
+    }
+    cout <<endl;
+}
+	\end{lstlisting}
+	
+	\section{Constitution d’une liste}
+	Construire alors la liste d’entier L=<6, 55, 444>.
+	
+	\begin{lstlisting}
+int main(){
+     //creation liste vide
+    cout << "Insertion de 444 a la position 0" << endl;
+    //appeler le sous programme insertion avec les bons paramètres
+    //afficher la liste
+    cout << "Insertion de 6 a la position 0" << endl;
+    //appeler le sous programme insertion avec les bons paramètres
+    //afficher la liste
+    cout << "Insertion de 55 a la position 1" << endl;
+    //appeler le sous programme insertion avec les bons paramètres
+    //afficher la liste
+    cout << "Suppression de l'element a la position 1" << endl;
+    //appeler le sous programme supprimer avec les bons paramètres
+    //afficher la liste
+    cin.get();//attendre que l'utilisateur appuie sur ENTREE
+    return 0;	 
+}
+\end{lstlisting}
+	
+	\section{Améliorations, contrôles}
+	Pour toutes ces opérations, proposez des contrôles qui permettraient de prendre en compte et d’éviter les cas d’erreurs ....
+\end{document}
