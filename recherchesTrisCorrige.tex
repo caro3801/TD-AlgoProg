@@ -1,0 +1,302 @@
+\documentclass[french]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+
+\usepackage[a4paper,left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{babel}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{1pt}
+\fancyhead[L]{Algorithmique et Programmation Avancée}
+\fancyfoot[R]{Ebersold, Thieblin, Desprat}
+\fancyhead[R]{Département Mathématiques-Informatique}
+\fancyfoot[L]{MIA0301V - MI00304}
+
+
+\usepackage{listingsutf8}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset { %
+	language=C++,
+    basicstyle=\footnotesize\ttfamily,
+    keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{olive}\ttfamily,
+    morecomment=[l][\color{magenta}]{\#},
+	backgroundcolor=\color{black!5}, % set backgroundcolor
+	numbers=left, 
+    numberstyle=\tiny\ttfamily, 
+    breaklines=true,
+    numbersep=5pt,
+    xleftmargin=.25in,
+    xrightmargin=.25in
+}
+\lstset{%
+	inputencoding=utf8,
+	extendedchars=true,
+	literate=%
+	{é}{{\'e}}{1}%
+	{è}{{\`e}}{1}%
+	{à}{{\`a}}{1}%
+	{ç}{{\c{c}}}{1}%
+	{œ}{{\oe}}{1}%
+	{ù}{{\`u}}{1}%
+	{É}{{\'E}}{1}%
+	{È}{{\`E}}{1}%
+	{À}{{\`A}}{1}%
+	{Ç}{{\c{C}}}{1}%
+	{Œ}{{\OE}}{1}%
+	{Ê}{{\^E}}{1}%
+	{ê}{{\^e}}{1}%
+	{î}{{\^i}}{1}%
+	{ô}{{\^o}}{1}%
+	{û}{{\^u}}{1}%
+	{ë}{{\¨{e}}}1
+	{û}{{\^{u}}}1
+	{â}{{\^{a}}}1
+	{Â}{{\^{A}}}1
+	{Î}{{\^{I}}}1
+}
+
+
+\begin{document}
+	
+	\begin{minipage}{\textwidth}
+\begin{center}
+
+{\Large Mise en œuvre avec C++ \\ {\color{red}\textbf{CORRIGE}} - Feuille d'exercices : \textbf{Recherches et tris}}
+\end{center}
+	\end{minipage}
+	
+\section*{Rappel}
+En C++, il est nécessaire d'avoir un (et un seul) sous-programme \texttt{main} -- qui renvoit toujours un entier -- à partir duquel s'exécute les sous-programme. On l'écrit dans un fichier \texttt{.cpp} préalablement créé.
+\begin{lstlisting}[caption={Exemple de main dans recherche1.cpp}]
+int main(){
+    //appel des sous programmes
+    //...
+    cin.get();//attendre que l'utilisateur appuie sur ENTREE
+    return 0;
+}    
+\end{lstlisting}
+
+\section{Recherche d'un élément dans un tableau}
+
+	Au sein d’un programme \texttt{recherche\_1.cpp}, écrire un sous-programme qui prend en paramètres un tableau non trié et une valeur à rechercher, et qui retourne l’indice de l’élément recherché à l’intérieur du tableau s’il existe, -1 sinon.
+	
+	
+\begin{lstlisting}[caption={Recherche dans un tableau non trie}]
+//recherche dans un tableau non trie
+int recherche1(int tab[], int val, int taille){
+    bool trouve= false;
+    int i=0;
+    int index = -1;// index vaut -1 tant que val n'a pas ete trouvee
+    //parcours du tableau jusqu'a ce qu'on trouve l'element
+    while(i < taille && !trouve){
+        if ( tab[i]== val){
+            trouve=true;
+            index=i;
+        }
+        i++;
+    }
+    return index;
+}
+	\end{lstlisting}
+\section{Recherche d'un élément dans un tableau trié}
+	Même question pour un \textbf{tableau trié} \texttt{recherche\_2.cpp}.
+	
+		\begin{lstlisting}[caption={Recherche dans un tableau trie}]
+//Recherche dans un tableau trie
+int recherche2(int tab[], int val, int taille){
+    bool trouve= false;
+    int i=0;
+    int index = -1;// index vaut -1 tant que val n'a pas ete trouvee
+    //tant que je suis dans le tableau, et que val n'est pas trouvee
+    //et que j'ai une chance de trouver ma valeur
+    //    (mon tableau est trie, si tab[i]> val, val n'est pas dans le reste du tableau)
+    while(i < taille && !trouve && tab[i]<=val){
+        if ( tab[i]== val){
+            trouve=true;
+            index=i;
+        }
+        i++;
+    }
+    return index;
+}
+	\end{lstlisting}
+	
+	\section{Recherche d'un élément dans un tableau trié par dichotomie}
+	Même question pour un tableau trié, mais la recherche doit se faire par \textbf{dichotomie} \texttt{recherche\_3.cpp}
+	
+	
+		\begin{lstlisting}[caption={Recherche dichotomique tableau trie}]
+//Recherche dichotomique tableau trie
+int recherche3(int tab[], int val, int taille){
+    int iDeb = 0; //indice debut du tableau de debut de recherche
+    int iFin = taille - 1; // indice du tableau de fin de recherche
+    int iMil; // indice du tableau de milieu de recherche
+    int index=-1;
+    bool trouve = false;
+    
+    while( iDeb <= iFin && !trouve){
+        iMil=(iDeb+iFin)/2;//calcul de l'indice milieu
+        //cas ou la valeur est au milieu
+        if (tab[iMil]==val){
+            trouve=true;
+            index=iMil;
+        }
+        //si ma valeur est avant le milieu, je cherche dans 1ere moitie
+        else if (tab[iMil] > val){
+            iFin = iMil - 1;
+        }
+        //si ma valeur est apres le milieu, je cherche dans 2eme moitie
+        else if(tab[iMil] < val){
+            iDeb = iMil +1;
+        }
+    }
+    
+    return index;
+}
+
+	\end{lstlisting}
+	
+			\begin{lstlisting}[caption={Recherche dichotomique récursive dans tableau trie}]
+//recherche dichotomique version recursive (tableau trie)
+// autre implementation de la recherche dichotomique en utilisant la recursivite
+int rechercheDichoRecursive(int tab[], int val, int deb, int fin){
+    int r;
+    int p = (fin+deb)/2;
+    if(fin<=deb && tab[p]!=val){
+        r=-1;
+    }
+    else if(val ==tab[p]){
+        r=p;
+    }
+    else if(val>tab[p]){
+        r=rechercheDichoRecursive(tab,val,p+1,fin);
+    }
+    else if(val<tab[p]){
+        r=rechercheDichoRecursive(tab,val,deb,p-1);
+    }
+    return r;
+}
+	\end{lstlisting}
+\section{Tri par insertion}
+Au sein d’un programme \texttt{tri\_insertion.cpp}, écrire un sous-programme qui prend en paramètre un tableau quelconque et le retourne trié. Le tri se fait selon la méthode de l’insertion. Le principe de ce tri est très simple : c'est le tri que toute personne utilise quand elle a des dossiers (ou n'importe quoi d'autre) à classer. On prend un dossier et on le met à sa place parmi les dossiers déjà triés. Puis on recommence avec le dossier suivant. Pour procéder à un tri par insertion, il suffit de parcourir un tableau : on prend les éléments dans l'ordre. Ensuite, on les compare avec les éléments précédents jusqu'à trouver la place de l'élément qu'on considère. Il ne reste plus qu'à décaler les éléments du tableau pour insérer l'élément considéré à sa place dans la partie déjà triée.
+
+	\begin{lstlisting}[caption={Tri par insertion}]
+//tri par insertion
+void triInsertion(int tab[], int taille){
+    int tmp, j;
+    // e sert de variable tampon pour l'echange de valeurs
+    //parcours du tableau du 2e element au dernier
+    //on considere que le tableau est en deux parties : [elements tries, elements a trier]
+    //au debut, le premier element tab[0] est considere le seul trie
+    //on prend le premier element de la partie elements a trier : tab[i]
+    for (int i = 1; i <taille; i++){
+        //on prend le premier element de la partie elements a trier
+        //on sauvegarde sa valeur dans tmp
+        tmp = tab[i];
+        //on va regarder tous les elements tries avant i
+        j=i-1;
+        //parcours de la partie elements tries du tableau en sens decroissant
+        while(j>=0 && tab[j] > tmp){
+            //on decale tous les elements plus grands que tab[i] (tmp) vers la droite
+            //le decalage se fait par inversion successive de valeurs
+            tab[j+1]=tab[j];
+            tab[j]=tmp;
+            j--;
+        }
+    }
+}
+	\end{lstlisting}
+\section{Tri par sélection}
+Même problème en utilisant un tri par sélection. Le tri par sélection consiste en la recherche soit du plus grand élément (ou le plus petit) que l'on va replacer à sa position finale c'est-à-dire en dernière position (ou en première), puis on recherche le second plus grand élément (ou le second plus petit) que l'on va replacer également à sa position finale c'est-à-dire en avant- dernière position (ou en seconde), etc., jusqu'à ce que le tableau soit entièrement trié.
+
+\begin{lstlisting}[caption={Tri par selection}]
+//tri par selection
+void triSelection(int tab[], int taille){
+    //on considere tab = [elements tries, elements non tries] (au debut, elements tries vide)
+    //on cherche le minimum des elements non tries, et on le met a la fin des tries
+    int iMin;
+    int tmp;//variable utilisee pour l'echange de valeurs
+    for (int i = 0; i <taille; i++){
+        iMin = i;
+        //parcours de la partie non triee pour trouver le min
+        for (int j = i+1; j < taille; j++){
+            if (tab[j] < tab[iMin]){
+                iMin = j;
+            }
+        }
+        //inversion de l'element min trouve avec la fin de la partie non triee
+        tmp = tab[iMin];
+        tab[iMin] = tab[i];
+        tab[i]=tmp;
+    }
+}
+\end{lstlisting}
+\section{Tri à bulles}
+Même problème en utilisant un tri à bulles. Le tri à bulles consiste à faire remonter le plus grand élément du tableau (comme une bulle d'air remonte à la surface) en comparant les éléments successifs. C'est-à-dire qu'on va comparer le 1er et le 2e élément du tableau, conserver le plus grand et puis les échanger s'ils sont désordonnés les uns par rapport aux autres. On recommence cette opération jusqu'à la fin du tableau. Ensuite, il ne reste plus qu'à renouveler cela jusqu'à l'avant-dernière place et ainsi de suite...
+
+\begin{lstlisting}[caption={Tri à bulles}]
+//Tri à bulles
+void triABulles(int tab[], int taille){
+    //tab =[elements non tries, elements tries] (au debut, elements tries vide)
+    int tmp ; //variable pour echange de valeurs
+    //parcours du tableau
+    for (int i =0; i <taille; i++){
+        //parcours de la partie non triee du tableau (debut)
+        for (int j=0; j < taille-(i+1);j++){
+            //si un element plus grand est situe avant un plus petit dans le tableau
+            // on inverse leurs valeurs
+            if (tab[j] > tab[j+1]){
+                tmp = tab[j];
+                tab[j] = tab[j+1];
+                tab[j+1] = tmp;
+            }
+        }
+    }
+}
+\end{lstlisting}
+	
+	\section*{Sous programmes supplémentaires}
+	
+	\begin{lstlisting}[caption={Sous programmes supplémentaires}]
+//remplir un tableau
+void remplirTableau(int tab[], int taille){
+    cout << "Remplir le tableau : " <<endl;;
+    for (int i =0; i < taille; i++){
+        cout << "Element a l'indice " << i << " : ";
+        cin >> tab[i];
+    }
+}
+
+//afficher un tableau
+void afficherTableau(int tab[], int taille){
+    cout << "Le tableau contient : ";
+    for (int i=0; i < taille; i++){
+        cout << tab[i] << "  ";
+    }
+    cout << endl;
+}
+
+
+int main(int argc, char *argv[])
+{
+    int taille=4;
+    int tab[taille];
+    remplirTableau(tab,taille);
+    int val=6;
+    //appels des differents tris
+    //triInsertion(tab,taille);
+    //triSelection(tab,taille);
+    triABulles(tab,taille);
+    afficherTableau(tab,taille);
+    cout << val <<" est a l'indice " << recherche3(tab,val,taille) << endl;  
+    cin.get();
+    cin.get();//attendre l'utilisateur
+    return EXIT_SUCCESS;
+}
+	\end{lstlisting}
+\end{document}
