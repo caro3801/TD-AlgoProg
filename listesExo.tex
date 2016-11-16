@@ -6,6 +6,12 @@
 \usepackage[a4paper,left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{babel}
 
+\usepackage[colorinlistoftodos]{todonotes}
+\newcommand{\elodie}[2][]{\todo[bordercolor=teal,color=teal!25, #1]{Elodie: {\small #2}}}
+\newcommand{\caroline}[2][]{\todo[bordercolor=yellow,color=yellow!25, #1]{Caroline: {\small #2}}}
+\newcommand{\sophie}[2][]{\todo[bordercolor=red,color=red!25, #1]{Sophie: {\small #2}}}
+\newcommand{\R}[0]{\mathbb{R}}
+
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{1pt}
@@ -66,7 +72,7 @@
 	\begin{minipage}{\textwidth}
 \begin{center}
 
-{\Large Algorithmique et Programmation Avancée - Mise en œuvre avec C++ \\ Feuille d'exercices : \textbf{les Listes}}
+{\Large Mise en œuvre avec C++ \\ Feuille d'exercices : \textbf{les Listes}}
 \end{center}
 	\end{minipage}
 	
@@ -83,19 +89,26 @@ struct date {
 };
 	\end{lstlisting}
 	
-	Chaque \textbf{variable} de type \texttt{date} est donc composée de trois parties appelées ses « champs » (\texttt{jour,mois,annee}). 
-	
-	Chaque \textbf{champ} est caractérisé par son \textbf{type} et son \textbf{identificateur}.
+	Chaque \textbf{variable} de type \texttt{date} est donc composée de trois parties appelées ses « champs » (\texttt{jour,mois,annee}). Chaque \textbf{champ} est caractérisé par son \textbf{type} et son \textbf{identificateur}.
 	
 	Accès aux champs d'une variable composée : utiliser l’opérateur << \textbf{.} >> suivi de l’identificateur du champ. Ainsi : \texttt{id\_variable.id\_champ} permet d’accéder au champ \texttt{id\_champ} de la variable \texttt{id\_variable}.
-	
 	\begin{lstlisting}[caption={Utilisation du type date}]
+//utilisation comme argument dans une fonction (qui ne modifie pas les valeurs de la structure)
+void afficherDate(date d){
+    cout << d.jour << "/" << d.mois << "/" << d.annee << endl;
+}
+//utilisation comme argument dans une fonction qui modifie les valeurs de la structure
+void modifierMois(date d, int nouveauMois){
+    d.mois = nouveauMois;
+}
+//appel des fonctions depuis le main
 int main() {
-    	date d;
-    	d.jour = 7;
+    	date d; // declaration d'une variable de type date
+    	d.jour = 7; //affectation des champs de la variable d
     	d.mois = 6;
     	d.annee = 2012;
-    	cout << d.jour << "/" << d.mois << "/" << d.annee << endl;
+    	modifierMois(d, 8); 
+    	afficherDate(d);s
     	system("PAUSE");
 }
 	\end{lstlisting}
@@ -104,22 +117,24 @@ int main() {
 	\subsection{Donnez la structure d’une liste itérative implantée par un tableau}
 	Considérons les sous-programmes suivants dans une liste d’entiers (\texttt{int tab[10]}):
 \begin{lstlisting}[caption={Liste des opérations dans une liste d’entiers}]
+// creation d'une liste vide 
+Liste listeVide()
 // le rajout d un élément se fait en tête de liste
-void insererAuDebut(int element){} 
+void insererAuDebut(Liste &l, int element){} 
 // On peut vider la liste dans sa totalite
-void purger(){} 
+void purger(Liste &l){} 
 //On supprime l élément repere par sa valeur
-boolean effacerElement(int element){}
+boolean effacerElement(Liste &l, int element){}
 // teste si la liste est vide
-boolean estVide(){} 
+boolean estVide(Liste &l){} 
 // retourne la longueur de la liste
-int longueur(){}
+int longueur(Liste &l){}
 //retourne la valeur de l élément en tete de liste
-int tete(){}
+int tete(Liste &l){}
 // recherche si l entier element est present dans la liste 
 // si oui le programme retourne son index 
 // sinon s il n est pas dans la liste le programme retourne -1.
-int rechercher (int element){}  
+int rechercher (Liste &l, int element){}  
 \end{lstlisting}
 	
 	
@@ -170,7 +185,7 @@ Liste listeVide(){
 }
 
 //Fonction qui renvoie le premier element de la liste
-int tete(Liste l){}
+int tete(Liste &l){}
 
 //renvoie -1 si l'element n'est pas dans la liste, son indice sinon
 int rechercher (Liste l, int e){
@@ -184,12 +199,12 @@ int rechercher (Liste l, int e){
 }
 
 //Fonction pour savoir si une liste est vide
-bool estVide(Liste l){
+bool estVide(Liste &l){
     // Si l.NbEl==0, renvoie True,  false sinon
 }
 
 //fonction qui renvoie la longueur d'une liste
-int longueur(Liste l){}
+int longueur(Liste &l){}
 
 //Fonction qui insere un element a l'indice index du tableau
 void inserer(Liste &l, int index, int e){
@@ -214,7 +229,7 @@ void supprimer(Liste &l, int index){
 }
 
 //fonction pour afficher la liste
-void afficherListe(Liste l){
+void afficherListe(Liste &l){
     cout << "La liste contient : " ;
     for (int i=0; i <l.NbEl; i++){
         cout << l.T[i] << " ";

@@ -83,19 +83,28 @@ struct date {
 };
 	\end{lstlisting}
 	
-	Chaque \textbf{variable} de type \texttt{date} est donc composée de trois parties appelées ses « champs » (\texttt{jour,mois,annee}). 
-	
-	Chaque \textbf{champ} est caractérisé par son \textbf{type} et son \textbf{identificateur}.
+	Chaque \textbf{variable} de type \texttt{date} est donc composée de trois parties appelées ses « champs » (\texttt{jour,mois,annee}). Chaque \textbf{champ} est caractérisé par son \textbf{type} et son \textbf{identificateur}.
 	
 	Accès aux champs d'une variable composée : utiliser l’opérateur << \textbf{.} >> suivi de l’identificateur du champ. Ainsi : \texttt{id\_variable.id\_champ} permet d’accéder au champ \texttt{id\_champ} de la variable \texttt{id\_variable}.
 	
-	\begin{lstlisting}[caption={Utilisation du type date}]
+
+		\begin{lstlisting}[caption={Utilisation du type date}]
+//utilisation comme argument dans une fonction (qui ne modifie pas les valeurs de la structure)
+void afficherDate(date d){
+    cout << d.jour << "/" << d.mois << "/" << d.annee << endl;
+}
+//utilisation comme argument dans une fonction qui modifie les valeurs de la structure
+void modifierMois(date d, int nouveauMois){
+    d.mois = nouveauMois;
+}
+//appel des fonctions depuis le main
 int main() {
-    	date d;
-    	d.jour = 7;
+    	date d; // declaration d'une variable de type date
+    	d.jour = 7; //affectation des champs de la variable d
     	d.mois = 6;
     	d.annee = 2012;
-    	cout << d.jour << "/" << d.mois << "/" << d.annee << endl;
+    	modifierMois(d, 8); 
+    	afficherDate(d);s
     	system("PAUSE");
 }
 	\end{lstlisting}
@@ -104,22 +113,24 @@ int main() {
 	\subsection{Donnez la structure d’une liste itérative implantée par un tableau}
 	Considérons les sous-programmes suivants dans une liste d’entiers (\texttt{int tab[10]}):
 \begin{lstlisting}[caption={Liste des opérations dans une liste d’entiers}]
+// creation d'une liste vide 
+Liste listeVide()
 // le rajout d un élément se fait en tête de liste
-void insererAuDebut(int element){} 
+void insererAuDebut(Liste &l, int element){} 
 // On peut vider la liste dans sa totalite
-void purger(){} 
+void purger(Liste &l){} 
 //On supprime l élément repere par sa valeur
-boolean effacerElement(int element){}
+boolean effacerElement(Liste &l, int element){}
 // teste si la liste est vide
-boolean estVide(){} 
+boolean estVide(Liste &l){} 
 // retourne la longueur de la liste
-int longueur(){}
+int longueur(Liste &l){}
 //retourne la valeur de l élément en tete de liste
-int tete(){}
+int tete(Liste &l){}
 // recherche si l entier element est present dans la liste 
 // si oui le programme retourne son index 
 // sinon s il n est pas dans la liste le programme retourne -1.
-int rechercher (int element){}  
+int rechercher (Liste &l, int element){}  
 \end{lstlisting}
 	
 	
@@ -128,7 +139,7 @@ int rechercher (int element){}
 struct Liste{
     int T[10];//tableau d'entiers (ici taille max = 10) 
     int NbEl;
-};//declaration d'une structure finie par un point-virgule
+};//declaration d'une structure finit par un point-virgule
 
 //fonction qui cree une liste vide 
 Liste listeVide(){
@@ -148,7 +159,7 @@ void purger(Liste &l){
 }
 
 //renvoie -1 si l'element n'est pas dans la liste, son indice sinon
-int rechercher (Liste l, int e){
+int rechercher (Liste &l, int e){
     bool trouve = false;
     int i=0;
     int index=-1;
@@ -164,7 +175,7 @@ int rechercher (Liste l, int e){
 }
 
 //Fonction pour savoir si une liste est vide
-bool estVide(Liste l){
+bool estVide(Liste &l){
     return (l.NbEl==0);// Si l.NbEl==0, renvoie True,  false sinon
 }
 
@@ -206,7 +217,7 @@ void effacerElement(Liste &l, int e){
 }
 
 //fonction pour afficher la liste
-void afficherListe(Liste l){
+void afficherListe(Liste &l){
     cout << "La liste contient : " ;
     for (int i=0; i <l.NbEl; i++){
         cout << l.T[i] << " ";
@@ -248,6 +259,10 @@ int main(){
 	A partir des opérations décrites en cours, donnez le code d’une ListeIterative
 	
 	\begin{lstlisting}
+#include <cstdlib>
+#include <iostream>
+using namespace std;	
+
 struct Liste{
     int T[10];//tableau d'entiers (ici taille max = 10)
     int NbEl;
@@ -261,12 +276,12 @@ Liste listeVide(){
 }
 
 //Fonction qui renvoie le premier element de la liste
-int tete(Liste l){
+int tete(Liste &l){
     return l.T[0];
 }
 
 //renvoie -1 si l'element n'est pas dans la liste, son indice sinon
-int rechercher (Liste l, int e){
+int rechercher (Liste &l, int e){
     bool trouve = false;
     int i=0;
     int index=-1;
@@ -282,12 +297,12 @@ int rechercher (Liste l, int e){
 }
 
 //Fonction pour savoir si une liste est vide
-bool estVide(Liste l){
+bool estVide(Liste &l){
     return (l.NbEl==0);// Si l.NbEl==0, renvoie True,  false sinon
 }
 
 //fonction qui renvoie la longueur d'une liste
-int longueur(Liste l){
+int longueur(Liste &l){
     return l.NbEl;
 }
 

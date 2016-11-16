@@ -30,8 +30,7 @@
     numberstyle=\tiny\ttfamily, 
     breaklines=true,
     numbersep=5pt,
-    xleftmargin=.25in,
-    xrightmargin=.25in
+    xleftmargin=.25in
 }
 \lstset{%
 	inputencoding=utf8,
@@ -162,7 +161,7 @@ int recherche2(int tab[], int val, int taille){
     int index = -1;// index vaut -1 tant que val n'a pas ete trouvee
     //tant que je suis dans le tableau, et que val n'est pas trouvee
     //et que j'ai une chance de trouver ma valeur
-    //    (mon tableau est trie, si tab[i]> val, val n'est pas dans le reste du tableau)
+    //(mon tableau est trie, si tab[i]> val, val n'est pas dans le reste du tableau)
     while(i < taille && !trouve && tab[i]<=val){
         if ( tab[i]== val){
             trouve=true;

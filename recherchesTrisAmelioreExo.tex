@@ -1,6 +1,7 @@
 \documentclass[french]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[colorinlistoftodos]{todonotes}
 \usepackage{lmodern}
 \usepackage{graphicx}
 \usepackage[a4paper,left=3cm,right=3cm,top=2.5cm,bottom=2.5cm]{geometry}
@@ -13,6 +14,11 @@
 \fancyfoot[R]{Ebersold, Thieblin, Desprat}
 \fancyhead[R]{Département Mathématiques-Informatique}
 \fancyfoot[L]{MIA0301V - MI00304}
+
+\newcommand{\elodie}[2][]{\todo[bordercolor=teal,color=teal!25, #1]{Elodie: {\small #2}}}
+\newcommand{\caroline}[2][]{\todo[bordercolor=yellow,color=yellow!25, #1]{Caroline: {\small #2}}}
+\newcommand{\sophie}[2][]{\todo[bordercolor=red,color=red!25, #1]{Sophie: {\small #2}}}
+\newcommand{\R}[0]{\mathbb{R}}
 
 
 \usepackage{listingsutf8}
@@ -69,7 +75,7 @@
 {\Large Mise en œuvre avec C++ \\ Feuille d'exercices : \textbf{Recherches et tris}}
 \end{center}
 	\end{minipage}
-	
+		
 \section*{Rappel}
 En C++, il est nécessaire d'avoir un (et un seul) sous-programme \texttt{main} -- qui renvoit toujours un entier -- à partir duquel s'exécute les sous-programme. On l'écrit dans un fichier \texttt{.cpp} préalablement créé.
 \begin{lstlisting}[caption={Exemple de main dans recherche1.cpp}]
@@ -92,7 +98,6 @@ void remplirTableau(int tab[], int taille){
 void afficherTableau(int tab[], int taille){
     //...
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -122,10 +127,29 @@ int main(int argc, char *argv[])
 	$\rightarrow$ Même question pour un \textbf{tableau trié} \texttt{recherche\_2.cpp}.
 	\section{Recherche d'un élément dans un tableau trié par dichotomie}
 	
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=0.4\textwidth]{dicho.jpg}
-	\end{figure}
+	\noindent\begin{minipage}{.65\textwidth}
+	\begin{lstlisting}[caption={Recherche dichotomique dans un tableau trie}]
+int rechercheDichotomique(Pile &pile, int val, int taille){
+    int iDeb = //indice debut du tableau de debut de recherche
+    int iFin = // indice du tableau de fin de recherche
+    int iMil;// indice du tableau de milieu de recherche
+    int index=-1;
+    bool trouve = false;
+    while( iDeb <= iFin && !trouve){
+        //calcul de l'indice milieu
+        //cas ou la valeur est au milieu
+        //si ma valeur est avant le milieu, je cherche dans 1ere moitie
+        //si ma valeur est apres le milieu, je cherche dans 2eme moitie
+    }
+    return index;
+}
+	\end{lstlisting}
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+
+		\includegraphics[width=0.9\textwidth]{dicho.jpg}
+
+\end{minipage}\hfill
 	$\rightarrow$ Même question pour un tableau trié, mais la recherche doit se faire par \textbf{dichotomie} \texttt{recherche\_3.cpp}
 \section{Tri par insertion}
 
@@ -161,7 +185,7 @@ Même problème en utilisant un tri par sélection. Le \textbf{tri par sélectio
 \end{enumerate} 
 \subsection*{A faire}
 \begin{enumerate}
-	\item Créer le fichier \texttt{tri\_selection.cpp}
+	\item Créer le sous programme triSelection et l'appeler dans le fichier \texttt{tri\_selection.cpp}
 	\item Écrire un sous-programme qui prend en paramètre un tableau quelconque et le retourne trié (\textbf{par sélection}).
 \end{enumerate}
 \section{Tri à bulles}
